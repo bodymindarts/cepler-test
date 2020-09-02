@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo dummy deployemnt file
+echo new message
