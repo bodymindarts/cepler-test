@@ -1,0 +1,16 @@
+concourse:
+  repo:
+    uri: "git@github.com:bodymindarts/cepler-test"
+    branch: "main"
+    private_key: ((github.private_key))
+  task:
+    image_resource:
+      type: registry-image
+      source:
+        repository: bodymindarts/cepler
+        tag: latest
+    run:
+      path: sh
+      args: ["-c", "find . | grep -v .git"]
+
+      # head_files => add_files, propagated_files up a level?
