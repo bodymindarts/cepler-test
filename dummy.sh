@@ -1,3 +1,1 @@
-#!/bin/bash
-
-echo new message
+Hello
