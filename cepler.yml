@@ -1,6 +1,6 @@
 concourse:
   repo:
-    uri: "https://github.com/bodymindarts/cepler-test"
+    uri: "git@github.com:bodymindarts/cepler-test"
     branch: "main"
     private_key: ((github.private_key))
   task:
