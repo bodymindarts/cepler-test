@@ -1,85 +1,8 @@
 jobs:
-- name: testflight
-  serial: true
-  plan:
-  - in_parallel:
-    - { get: repo }
-    - { get: testflight-head, trigger: true }
-    - get: propagator
-  - task: prepare-workspace
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: cepler
-        args: ["prepare", "-e", "testflight", "--force-clean"]
-        dir: repo
-  - task: execute
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        dir: repo
-        path: ls
-        args:
-          - "-al"
-  - task: record-state
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: cepler
-        args: ["record", "-e", "testflight"]
-        dir: repo
-  - task: tag
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      outputs:
-      - name: tag
-      run:
-        path: sh
-        args: ["-c", "echo testflight > name"]
-        dir: tag
-  - put: repo
-    params:
-      repository: repo
-      merge: true
-      tag: tag/name
-
 - name: staging
   serial: true
   plan:
   - in_parallel:
-    - { get: repo }
     - get: propagator
       trigger: true
       passed: [testflight]
@@ -91,13 +14,15 @@ jobs:
         source:
           repository: bodymindarts/cepler
           tag: latest
-      inputs:
-      - name: repo
       outputs:
       - name: repo
+      params:
+        GIT_URL: 
+        GIT_BRANCH: main
+        GIT_PRIVATE_KEY: ((github.private_key))
       run:
         path: cepler
-        args: ["prepare", "-e", "staging", "--force-clean"]
+        args: ["prepare", "-e", "staging", "--force-clean", "--clone repo"]
         dir: repo
   - task: execute
     config:
@@ -132,7 +57,23 @@ jobs:
         path: cepler
         args: ["record", "-e", "staging"]
         dir: repo
-  - task: tag
+  - in_parallel:
+    - put: repo
+      params:
+        repository: repo
+        merge: true
+    - put: staging
+      params:
+        repository: repo
+        merge: true
+
+- name: testflight
+  serial: true
+  plan:
+  - in_parallel:
+    - { get: testflight-head, trigger: true }
+    - get: propagator
+  - task: prepare-workspace
     config:
       platform: linux
       image_resource:
@@ -141,22 +82,77 @@ jobs:
           repository: bodymindarts/cepler
           tag: latest
       outputs:
-      - name: tag
+      - name: repo
+      params:
+        GIT_URL: 
+        GIT_BRANCH: main
+        GIT_PRIVATE_KEY: ((github.private_key))
       run:
-        path: sh
-        args: ["-c", "echo staging > name"]
-        dir: tag
-  - put: repo
-    params:
-      repository: repo
-      merge: true
-      tag: tag/name
+        path: cepler
+        args: ["prepare", "-e", "testflight", "--force-clean", "--clone repo"]
+        dir: repo
+  - task: execute
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: bodymindarts/cepler
+          tag: latest
+      inputs:
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        dir: repo
+        path: ls
+        args:
+          - "-al"
+  - task: record-state
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: bodymindarts/cepler
+          tag: latest
+      inputs:
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        path: cepler
+        args: ["record", "-e", "testflight"]
+        dir: repo
+  - in_parallel:
+    - put: repo
+      params:
+        repository: repo
+        merge: true
+    - put: testflight
+      params:
+        repository: repo
+        merge: true
 
 resources:
+- name: staging
+  type: git
+  source:
+    uri: git@github.com:bodymindarts/cepler-test
+    branch: staging
+    private_key: ((github.private_key))
+
+- name: testflight
+  type: git
+  source:
+    uri: git@github.com:bodymindarts/cepler-test
+    branch: testflight
+    private_key: ((github.private_key))
+
 - name: testflight-head
   type: git
   source:
-    uri: https://github.com/bodymindarts/cepler-test
+    uri: git@github.com:bodymindarts/cepler-test
     paths:
     - dummy.sh
     branch: main
@@ -165,14 +161,15 @@ resources:
 - name: repo
   type: git
   source:
-    uri: https://github.com/bodymindarts/cepler-test
+    uri: git@github.com:bodymindarts/cepler-test
     branch: main
     private_key: ((github.private_key))
 
 - name: propagator
   type: git
   source:
-    uri: https://github.com/bodymindarts/cepler-test
+    uri: git@github.com:bodymindarts/cepler-test
     branch: main
     private_key: ((github.private_key))
+
 
