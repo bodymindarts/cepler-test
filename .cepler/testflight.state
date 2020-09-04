@@ -1,8 +1,15 @@
 ---
 current:
-  head_commit: 03a194106c01907b7aa75c86ba68a6c89ef921f6
+  head_commit: 0a7119c4dbb2b0705d167f1c023c2a23bca83a8c
   files:
     dummy.sh:
       file_hash: 336c15faddb182867ea2714efbe46fd4799854d0
       from_commit: 1759b11088f27d0dfa01999c4005fd17890a70b7
       message: Old dummy
+history:
+  - head_commit: 03a194106c01907b7aa75c86ba68a6c89ef921f6
+    files:
+      dummy.sh:
+        file_hash: 336c15faddb182867ea2714efbe46fd4799854d0
+        from_commit: 1759b11088f27d0dfa01999c4005fd17890a70b7
+        message: Old dummy
