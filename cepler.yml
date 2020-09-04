@@ -3,10 +3,15 @@ concourse:
     uri: "https://github.com/bodymindarts/cepler-test"
     branch: "main"
     private_key: ((github.private_key))
-
-hook:
-  cmd: "ls"
-  args: ["-al"]
+  task:
+    image_resource:
+      type: registry-image
+      source:
+        repository: bodymindarts/cepler
+        tag: latest
+    run:
+      path: ls
+      args: ["-al"]
 
 environments:
   testflight:
