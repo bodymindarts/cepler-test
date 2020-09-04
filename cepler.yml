@@ -1,0 +1,47 @@
+concourse:
+  repo:
+    uri: "https://github.com/bodymindarts/cepler-test"
+    branch: "main"
+    private_key: ((github.private_key))
+
+hook:
+  cmd: "ls"
+  args: ["-al"]
+
+environments:
+  testflight:
+    head_files:
+    - dummy.sh
+  staging:
+    passed: testflight
+    propagated_files:
+    - dummy.sh
+
+# ---
+# environments:
+#   staging:
+#     testflight:
+#       current:
+#         head_commit: e0067aa22f92d89351743a52b2c99a2628108aff
+#           files:
+#             dummy.sh:
+#               file_hash: 97a71bd8bef8dbf82427fe55d9242130b4e3dc8b
+#               from_commit: e0067aa22f92d89351743a52b2c99a2628108aff
+
+#     history: [
+#     - head_commit: xxx
+#       files:
+#        dummy.sh:
+#         file_hash: 97a71bd8bef8dbf82427fe55d9242130b4e3dc8b
+#         from_commit: e0067aa22f92d89351743a52b2c99a2628108aff
+#     ]
+
+#    staging:
+#      current:
+#       head_commit: <headl-head>
+#       files:
+#        head_file:
+#          file_hash: xxx
+#        dummy.sh:
+#         file_hash: 97a71bd8bef8dbf82427fe55d9242130b4e3dc8b
+#         from_commit: e0067aa22f92d89351743a52b2c99a2628108aff
