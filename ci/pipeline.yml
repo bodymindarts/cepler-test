@@ -22,7 +22,7 @@ jobs:
         GIT_PRIVATE_KEY: ((github.private_key))
       run:
         path: cepler
-        args: ["prepare", "-e", "staging", "--force-clean", "--clone repo"]
+        args: ["prepare", "-e", "staging", "--force-clean", "--clone", "repo"]
         dir: repo
   - task: execute
     config:
@@ -89,7 +89,7 @@ jobs:
         GIT_PRIVATE_KEY: ((github.private_key))
       run:
         path: cepler
-        args: ["prepare", "-e", "testflight", "--force-clean", "--clone repo"]
+        args: ["prepare", "-e", "testflight", "--force-clean", "--clone", "repo"]
         dir: repo
   - task: execute
     config:
