@@ -1,7 +1,3 @@
-hello
+#!/bin/bash
 
-goodbye
-
-hello
-
-sohten
+echo dummy deployemnt file
