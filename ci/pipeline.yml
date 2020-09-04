@@ -1,23 +1,15 @@
 jobs:
-- name: staging
-  serial: true
-  plan:
-  - { get: staging, trigger: true }
-
 - name: testflight
   serial: true
   plan:
   - { get: testflight, trigger: true }
 
-resources:
 - name: staging
-  type: cepler
-  source:
-    uri: git@github.com:bodymindarts/cepler-test
-    branch: main
-    private_key: ((github.private_key))
-    environment: staging
+  serial: true
+  plan:
+  - { get: staging, trigger: true }
 
+resources:
 - name: testflight
   type: cepler
   source:
@@ -25,6 +17,14 @@ resources:
     branch: main
     private_key: ((github.private_key))
     environment: testflight
+
+- name: staging
+  type: cepler
+  source:
+    uri: git@github.com:bodymindarts/cepler-test
+    branch: main
+    private_key: ((github.private_key))
+    environment: staging
 
 resource_types:
 - name: cepler
