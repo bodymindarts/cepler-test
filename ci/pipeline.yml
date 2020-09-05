@@ -1,30 +1,4 @@
 jobs:
-- name: staging
-  serial: true
-  plan:
-  - { get: staging, trigger: true }
-  - task: execute
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: staging
-        path: repo
-      outputs:
-      - name: repo
-      run:
-        dir: repo
-        path: ls
-        args:
-          - "-al"
-  - put: staging-branch
-    params:
-      repository: repo
-
 - name: testflight
   serial: true
   plan:
@@ -47,11 +21,93 @@ jobs:
         path: ls
         args:
           - "-al"
+  - task: record-state
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: bodymindarts/cepler
+          tag: latest
+      inputs:
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        path: cepler
+        args: ["record", "-e", "testflight"]
+        dir: repo
+  - put: repo
+    params:
+      repository: repo
+      rebase: true
   - put: testflight-branch
     params:
       repository: repo
 
+- name: staging
+  serial: true
+  plan:
+  - { get: staging, trigger: true }
+  - task: execute
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: bodymindarts/cepler
+          tag: latest
+      inputs:
+      - name: staging
+        path: repo
+      outputs:
+      - name: repo
+      run:
+        dir: repo
+        path: ls
+        args:
+          - "-al"
+  - task: record-state
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: bodymindarts/cepler
+          tag: latest
+      inputs:
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        path: cepler
+        args: ["record", "-e", "staging"]
+        dir: repo
+  - put: repo
+    params:
+      repository: repo
+      rebase: true
+  - put: staging-branch
+    params:
+      repository: repo
+
 resources:
+- name: testflight
+  type: cepler
+  source:
+    uri: git@github.com:bodymindarts/cepler-test
+    branch: main
+    private_key: ((github.private_key))
+    environment: testflight
+
+- name: testflight-branch
+  type: git
+  source:
+    uri: git@github.com:bodymindarts/cepler-test
+    branch: testflight
+    private_key: ((github.private_key))
+    environment: testflight-branch
+
 - name: staging
   type: cepler
   source:
@@ -68,21 +124,13 @@ resources:
     private_key: ((github.private_key))
     environment: staging-branch
 
-- name: testflight
-  type: cepler
+- name: repo
+  type: git
   source:
     uri: git@github.com:bodymindarts/cepler-test
     branch: main
     private_key: ((github.private_key))
-    environment: testflight
-
-- name: testflight-branch
-  type: git
-  source:
-    uri: git@github.com:bodymindarts/cepler-test
-    branch: testflight
-    private_key: ((github.private_key))
-    environment: testflight-branch
+    environment: repo
 
 resource_types:
 - name: cepler
