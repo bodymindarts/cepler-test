@@ -21,3 +21,6 @@ environments:
     passed: testflight
     propagated_files:
     - dummy.sh
+    head_files:
+    - a.file
+    - staging.yml

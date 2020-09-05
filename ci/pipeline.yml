@@ -61,6 +61,7 @@ jobs:
     - put: staging-branch
       params:
         repository: repo
+        rebase: true
 
 - name: testflight
   serial: true
@@ -124,6 +125,7 @@ jobs:
     - put: testflight-branch
       params:
         repository: repo
+        rebase: true
 
 resources:
 - name: staging
