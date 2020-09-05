@@ -1,6 +1,6 @@
 ---
 current:
-  head_commit: a34aaf09613110fa934bc341d9e28eba96dd4850
+  head_commit: f0fabbb5daa098f320e0d6679994c50fdb59ba9e
   propagated_head: 313bed25909cc5bb3d3597097433413ea61a273f
   files:
     a.file:
@@ -11,7 +11,22 @@ current:
       file_hash: ce013625030ba8dba906f756967f9e9ca394464a
       from_commit: b417d0b2f1e1518a8c1466568065f1f079654f1e
       message: Updated dummy.sh
+    staging.yml:
+      file_hash: 97a71bd8bef8dbf82427fe55d9242130b4e3dc8b
+      from_commit: f0fabbb5daa098f320e0d6679994c50fdb59ba9e
+      message: Change
 history:
+  - head_commit: a34aaf09613110fa934bc341d9e28eba96dd4850
+    propagated_head: 313bed25909cc5bb3d3597097433413ea61a273f
+    files:
+      a.file:
+        file_hash: 97a71bd8bef8dbf82427fe55d9242130b4e3dc8b
+        from_commit: 42c0dc70cf238bf48dbcb3df0e3240f77e09faf1
+        message: a.file
+      dummy.sh:
+        file_hash: ce013625030ba8dba906f756967f9e9ca394464a
+        from_commit: b417d0b2f1e1518a8c1466568065f1f079654f1e
+        message: Updated dummy.sh
   - head_commit: 3f6bfc832918adca780faed981767cb1920202d7
     propagated_head: 313bed25909cc5bb3d3597097433413ea61a273f
     files:
