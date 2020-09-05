@@ -1,8 +1,15 @@
 ---
 current:
-  head_commit: 313bed25909cc5bb3d3597097433413ea61a273f
+  head_commit: f0fabbb5daa098f320e0d6679994c50fdb59ba9e
   files:
     dummy.sh:
-      file_hash: ce013625030ba8dba906f756967f9e9ca394464a
-      from_commit: b417d0b2f1e1518a8c1466568065f1f079654f1e
-      message: Updated dummy.sh
+      file_hash: 2183ea044e3a26bb19d75750de6a2b9cc9a4e695
+      from_commit: f0fabbb5daa098f320e0d6679994c50fdb59ba9e
+      message: Change
+history:
+  - head_commit: 313bed25909cc5bb3d3597097433413ea61a273f
+    files:
+      dummy.sh:
+        file_hash: ce013625030ba8dba906f756967f9e9ca394464a
+        from_commit: b417d0b2f1e1518a8c1466568065f1f079654f1e
+        message: Updated dummy.sh
