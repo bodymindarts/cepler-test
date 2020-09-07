@@ -1,63 +1,4 @@
 jobs:
-- name: testflight
-  serial: true
-  plan:
-  - { get: testflight, trigger: true }
-  - task: execute
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: testflight
-        path: repo
-      outputs:
-      - name: repo
-      run:
-        dir: repo
-        path: ls
-        args:
-          - "-al"
-  - task: record-state
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: cepler
-        args: ["record", "-e", "testflight"]
-        dir: repo
-  - task: prepare-push
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: git
-        args: ["reset", "--hard", "HEAD"]
-        dir: repo
-  - put: repo
-    params:
-      repository: repo
-      rebase: true
-
 - name: staging
   serial: true
   plan:
@@ -80,52 +21,37 @@ jobs:
         path: ls
         args:
           - "-al"
-  - task: record-state
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: cepler
-        args: ["record", "-e", "staging"]
-        dir: repo
-  - task: prepare-push
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: bodymindarts/cepler
-          tag: latest
-      inputs:
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: git
-        args: ["reset", "--hard", "HEAD"]
-        dir: repo
-  - put: repo
+  - put: staging
     params:
       repository: repo
-      rebase: true
+
+- name: testflight
+  serial: true
+  plan:
+  - { get: testflight, trigger: true }
+  - task: execute
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: bodymindarts/cepler
+          tag: latest
+      inputs:
+      - name: testflight
+        path: repo
+      outputs:
+      - name: repo
+      run:
+        dir: repo
+        path: ls
+        args:
+          - "-al"
+  - put: testflight
+    params:
+      repository: repo
 
 resources:
-- name: testflight
-  type: cepler
-  source:
-    uri: git@github.com:bodymindarts/cepler-test
-    branch: main
-    private_key: ((github.private_key))
-    environment: testflight
-
 - name: staging
   type: cepler
   source:
@@ -134,13 +60,13 @@ resources:
     private_key: ((github.private_key))
     environment: staging
 
-- name: repo
-  type: git
+- name: testflight
+  type: cepler
   source:
     uri: git@github.com:bodymindarts/cepler-test
     branch: main
     private_key: ((github.private_key))
-    environment: repo
+    environment: testflight
 
 resource_types:
 - name: cepler
