@@ -1,0 +1,9 @@
+---
+current:
+  head_commit: 70cbc9870b30fa99e3fe5ce4277614db9d19423a
+  propagated_head: aed3ab78f7ebef54e348226244cf2459d41c1444
+  files:
+    dummy.sh:
+      file_hash: 37fd1d98f8490170acc45a0db584787f61261cd9
+      from_commit: de02c7a062fcb0461b1f7a09d3e9ed2aa1fbe4c9
+      message: Dummy
