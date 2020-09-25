@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cepler concourse gen > ci/pipeline.yml
+fly -t bucc set-pipeline -p cepler-test -c ci/pipeline.yml
