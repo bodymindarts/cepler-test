@@ -1,0 +1,12 @@
+---
+current:
+  head_commit: 5852843f39e697c1449275e20d2b7aab2099619c
+  files:
+    "{latest}/k8s/service.yml":
+      file_hash: 24772660c277690e1865f88fd6c28e7bc6119f14
+      from_commit: b61e8fc3faa092a7a0b6ce84a7e47a3b015e682e
+      message: Initial commit
+    "{latest}/k8s/testflight.yml":
+      file_hash: 2b8406489076676b237ebefeaff6f7c18e49fd3a
+      from_commit: 5852843f39e697c1449275e20d2b7aab2099619c
+      message: Update testflight.yml
