@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cepler concourse gen > ci/pipeline.yml
+docker run -v $(pwd):/workspace/inputs -it piper process > ci/pipeline.yml
 fly -t bucc set-pipeline -p cepler-test -c ci/pipeline.yml
